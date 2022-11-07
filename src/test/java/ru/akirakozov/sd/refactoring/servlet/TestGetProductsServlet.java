@@ -26,6 +26,8 @@ public class TestGetProductsServlet extends BaseTestServlets {
 
         String actual = writer.toString();
 
+        System.out.println(actual);
+
         assertTrue(actual.startsWith("<html><body>\r\n"));
         assertTrue(actual.contains("item1\t1</br>\r\n"));
         assertTrue(actual.contains("item2\t22</br>\r\n"));
