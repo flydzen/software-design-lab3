@@ -4,6 +4,7 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.mockito.Mockito;
+import ru.akirakozov.sd.refactoring.db.CURD;
 import ru.akirakozov.sd.refactoring.db.Product;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,14 +20,13 @@ import static org.mockito.Mockito.when;
 
 public class BaseTestServlets {
     private static Connection connection;
-    private static final String dbPath = "jdbc:sqlite:test.db";
     protected HttpServletRequest request;
     protected HttpServletResponse response;
     protected StringWriter writer;
 
     @BeforeClass
     public static void setUp() throws SQLException {
-        connection = DriverManager.getConnection(dbPath);
+        connection = DriverManager.getConnection(CURD.DB_NAME);
         String sql = "CREATE TABLE IF NOT EXISTS PRODUCT" +
                 "(ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
                 " NAME           TEXT    NOT NULL, " +
@@ -58,14 +58,12 @@ public class BaseTestServlets {
     }
 
     protected Set<Product> getProducts() throws SQLException {
-        try (Connection c = DriverManager.getConnection(dbPath)) {
+        try (Connection c = DriverManager.getConnection(CURD.DB_NAME)) {
             Statement stmt = c.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM PRODUCT");
             Set<Product> products = new HashSet<>();
             while (rs.next()) {
-                String name = rs.getString("name");
-                int price = rs.getInt("price");
-                products.add(new Product(name, price));
+                products.add(new Product(rs.getString("name"), rs.getInt("price")));
             }
             rs.close();
             stmt.close();
@@ -74,7 +72,7 @@ public class BaseTestServlets {
     }
 
     protected void addProduct(String name, long price) throws SQLException {
-        try (Connection c = DriverManager.getConnection(dbPath)) {
+        try (Connection c = DriverManager.getConnection(CURD.DB_NAME)) {
             String sql = "INSERT INTO PRODUCT " +
                     "(NAME, PRICE) VALUES (\"" + name + "\"," + price + ")";
             Statement stmt = c.createStatement();

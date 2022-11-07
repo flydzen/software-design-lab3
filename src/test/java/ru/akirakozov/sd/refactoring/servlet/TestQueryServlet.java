@@ -30,8 +30,6 @@ public class TestQueryServlet extends BaseTestServlets {
 
         String actual = writer.toString();
 
-        System.out.println(actual);
-
         assertTrue(actual.startsWith("<html><body>\r\n"));
         assertTrue(actual.contains(header));
         assertTrue(actual.contains(product));
