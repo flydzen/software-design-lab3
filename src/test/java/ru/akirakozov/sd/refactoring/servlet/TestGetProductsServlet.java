@@ -1,6 +1,7 @@
 package ru.akirakozov.sd.refactoring.servlet;
 
 import org.junit.Test;
+import ru.akirakozov.sd.refactoring.db.Product;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -12,7 +13,7 @@ public class TestGetProductsServlet extends BaseTestServlets {
     private final GetProductsServlet servlet = new GetProductsServlet();
 
     @Test
-    public void testSuccess() throws IOException, SQLException {
+    public void testSuccess() throws SQLException {
         List<Product> items = Arrays.asList(
                 new Product("item1", 1),
                 new Product("item2", 22),
@@ -26,8 +27,6 @@ public class TestGetProductsServlet extends BaseTestServlets {
 
         String actual = writer.toString();
 
-        System.out.println(actual);
-
         assertTrue(actual.startsWith("<html><body>\r\n"));
         assertTrue(actual.contains("item1\t1</br>\r\n"));
         assertTrue(actual.contains("item2\t22</br>\r\n"));
@@ -36,7 +35,7 @@ public class TestGetProductsServlet extends BaseTestServlets {
     }
 
     @Test
-    public void testEmpty() throws IOException {
+    public void testEmpty() {
         servlet.doGet(request, response);
 
         String actual = writer.toString();

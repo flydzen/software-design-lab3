@@ -1,6 +1,7 @@
 package ru.akirakozov.sd.refactoring.servlet;
 
 import org.junit.Test;
+import ru.akirakozov.sd.refactoring.db.Product;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -28,6 +29,8 @@ public class TestQueryServlet extends BaseTestServlets {
         servlet.doGet(request, response);
 
         String actual = writer.toString();
+
+        System.out.println(actual);
 
         assertTrue(actual.startsWith("<html><body>\r\n"));
         assertTrue(actual.contains(header));

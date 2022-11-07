@@ -4,6 +4,7 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.mockito.Mockito;
+import ru.akirakozov.sd.refactoring.db.Product;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,30 +18,6 @@ import java.util.Set;
 import static org.mockito.Mockito.when;
 
 public class BaseTestServlets {
-    protected static class Product {
-        String name;
-        long price;
-
-        public Product(String name, long price) {
-            this.name = name;
-            this.price = price;
-        }
-
-        @Override
-        public int hashCode() {
-            return (int) (this.name.hashCode() ^ this.price);
-        }
-
-        @Override
-        public boolean equals(Object obj) {
-            if (!(obj instanceof Product)) {
-                return false;
-            }
-            Product other = (Product) obj;
-            return name.equals(other.name) && price == other.price;
-        }
-    }
-
     private static Connection connection;
     private static final String dbPath = "jdbc:sqlite:test.db";
     protected HttpServletRequest request;
