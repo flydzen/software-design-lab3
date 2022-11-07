@@ -8,14 +8,18 @@ import java.util.function.Consumer;
 public class CURD {
     public static final String DB_NAME = "jdbc:sqlite:test.db";
 
-    public static void insert(Product product) throws SQLException {
+    public static void upsert(String sql) throws SQLException {
         try (Connection c = DriverManager.getConnection(DB_NAME)) {
-            String sql = "INSERT INTO PRODUCT " +
-                    "(NAME, PRICE) VALUES (\"" + product.name + "\"," + product.price + ")";
             Statement stmt = c.createStatement();
             stmt.executeUpdate(sql);
             stmt.close();
         }
+    }
+
+    public static void insert(Product product) throws SQLException {
+        String sql = "INSERT INTO PRODUCT " +
+                "(NAME, PRICE) VALUES (\"" + product.name + "\"," + product.price + ")";
+        upsert(sql);
     }
 
     public static void query(String sql, Consumer<ResultSet> consumer) throws SQLException {
