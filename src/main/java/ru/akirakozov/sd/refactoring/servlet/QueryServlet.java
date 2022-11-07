@@ -33,7 +33,7 @@ public class QueryServlet extends HttpServlet {
     }};
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) {
         String command = request.getParameter("command");
 
         try {
@@ -57,7 +57,7 @@ public class QueryServlet extends HttpServlet {
                     }
                 });
                 writer.close();
-                
+
             } else {
                 response.getWriter().println("Unknown command: " + command);
             }
